@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+     tools:context=".MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/busqueda"
+            android:textSize="27sp"
+            android:id="@+id/btnBusqueda"
+            android:drawableStart="@drawable/ic_search"
+            android:drawableLeft="@drawable/ic_search"
+            android:onClick="onClick_Busqueda"
+            style="@style/btnStyleNuevaLista"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/listas"
+            android:id="@+id/btnMisListas"
+            android:textSize="27sp"
+            android:drawableRight="@drawable/ic_lista"
+            android:drawableEnd="@drawable/ic_lista"
+            android:onClick="onClick_MisListas"
+            style="@style/btnStyleMisListas"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/configuraciones"
+            android:textSize="27sp"
+            android:id="@+id/btnConfiguraciones"
+            android:onClick="onClick_Ajustes"
+            android:drawableLeft="@drawable/ic_settings_black_48dp"
+            android:drawableStart="@drawable/ic_settings_black_48dp"
+            android:drawablePadding="16dp"
+            style="@style/btnStyleGenoa" />
+    </LinearLayout>
+
+</LinearLayout>

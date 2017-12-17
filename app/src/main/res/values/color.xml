@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="velTextWhite">#FFFFFF</color>
+    <color name="velBtnUnPressed">#5A9A47</color>
+    <color name="velBtnPressed">#664933</color>
+    <color name="verdeOscuroLogo">#485B47</color>
+    <color name="verdeClaroLogo">#7CAE3F</color>
+    <color name="grisOscuroLogo">#666666</color>
+</resources>

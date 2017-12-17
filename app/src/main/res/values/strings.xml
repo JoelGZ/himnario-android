@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Himnario</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="busqueda">Búsqueda de Coros</string>
+    <string name="nlistas">Nueva Lista</string>
+    <string name="listas">Mis Listas</string>
+    <string name="title_activity_main">Alabadle con Entendimiento</string>
+    <string name="title_activity_busqueda">Búsqueda</string>
+    <string name="title_activity_mis_listas">Mis Listas</string>
+    <string name="search_box">Buscar por titulo ó frase</string>
+    <string name="title_activity_nueva_lista">Nueva Lista</string>
+
+    <string name="bb">Si bemol</string>
+    <string name="eb">Mi bemol</string>
+    <string name="ab">La bemol</string>
+    <string name="c">Do</string>
+    <string name="f">Fa</string>
+    <string name="g">Sol</string>
+
+    <string name="C">C</string>
+    <string name="Eb">Eb</string>
+    <string name="F">F</string>
+    <string name="G">G</string>
+    <string name="Ab">Ab</string>
+    <string name="Bb">Bb</string>
+    <string name="title_activity_results">Resultados</string>
+    <string name="lento">Lento</string>
+    <string name="medio">Medio</string>
+    <string name="rapido">Rapido</string>
+    <string name="title_activity_detail">DetailActivity</string>
+
+    <string name="tonalidad">Tonalidad:</string>
+    <string name="velocidad">Velocidad:</string>
+    <string name="tiempo">Tiempo:</string>
+    <string name="ton_alt">Otras Tonalidades:</string>
+    <string name="letra">Letra</string>
+    <string name="addCoros">Agregar Coros</string>
+    <string name="imagedescr">Agregar coro a lista</string>
+    <string name="escoger_lista">Escoger lista</string>
+    <string name="infoGen">Información General</string>
+    <string name="historia">Historia</string>
+    <string name="autorlet">Autor Letra:</string>
+    <string name="autormus">Autor Musica:</string>
+
+    <string-array name="colors_array">
+        <item>red</item>
+        <item>blue</item>
+        <item>orange</item>
+    </string-array>
+    <string name="title_activity_detail_listas">DetailListasActivity</string>
+    <string name="borrarTodas">Eliminar todas</string>
+    <string name="home">Inicio</string>
+    <string name="search">Búsqueda</string>
+    <string name="title_activity_musica">MusicaActivity</string>
+    <string name="lentosBold"><b>Lentos</b></string>
+    <string name="lentos">Lentos</string>
+    <string name="rapMedBold"><b>Rápidos y Medios</b></string>
+    <string name="rapidos">Rápidos</string>
+    <string name="medios">Medios</string>
+    <string name="Cita">Cita Bíblica:</string>
+    <string name="todas">Todas</string>
+    <string name="inicio">Inicio</string>
+    <string name="text_nlista">Elija la manera en que desea nombrar la nueva lista.</string>
+    <string name="crearNL">Crear Nueva Lista</string>
+    <string name="configuraciones">Configuraciones</string>
+    <string name="action_save_list">Guardar lista</string>
+    <string name="title_activity_reportar_problema">Reportar Problema</string>
+    <string name="title_activity_ajustes">Configuraciones</string>
+    <string name="title_activity_updates">Actualizaciones</string>
+</resources>

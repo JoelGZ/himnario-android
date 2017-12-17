@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coro_list"
+    android:name="com.innovate.himnario.CoroListFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/list_left_margin"
+    android:layout_marginStart="@dimen/list_left_margin"
+    app:layoutManager="LinearLayoutManager"
+    tools:listitem="@layout/list_item_coros" />
