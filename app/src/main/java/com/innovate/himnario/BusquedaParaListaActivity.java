@@ -422,10 +422,10 @@ public class BusquedaParaListaActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 if (!lentBtnAux) {
-                    btnLentos.setTextColor(0xFF7BAD3E);
+                    btnLentos.setTextColor(Color.WHITE);
                     velocidadesActivas.add("L");
                 } else {
-                    btnLentos.setTextColor(Color.WHITE);
+                    btnLentos.setTextColor(0xFF7BAD3E);
                     velocidadesActivas.remove("L");
                 }
                 lentBtnAux = !lentBtnAux;
@@ -438,10 +438,10 @@ public class BusquedaParaListaActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 if (!medBtnAux) {
-                    btnMedios.setTextColor(0xFF7BAD3E);
+                    btnMedios.setTextColor(Color.WHITE);
                     velocidadesActivas.add("M");
                 } else {
-                    btnMedios.setTextColor(Color.WHITE);
+                    btnMedios.setTextColor(0xFF7BAD3E);
                     velocidadesActivas.remove("M");
                 }
                 medBtnAux = !medBtnAux;
@@ -454,10 +454,10 @@ public class BusquedaParaListaActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 if (!rapBtnAux) {
-                    btnRapidos.setTextColor(0xFF7BAD3E);
+                    btnRapidos.setTextColor(Color.WHITE);
                     velocidadesActivas.add("R");
                 } else {
-                    btnRapidos.setTextColor(Color.WHITE);
+                    btnRapidos.setTextColor(0xFF7BAD3E);
                     velocidadesActivas.remove("R");
                 }
                 rapBtnAux = !rapBtnAux;

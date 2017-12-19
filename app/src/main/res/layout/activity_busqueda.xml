@@ -46,7 +46,7 @@
                     android:elevation="5dp"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:text="@string/lentos"
-                    android:textColor="@color/velTextWhite"/>
+                    android:textColor="@color/verdeVelButtonsDesactivados"/>
 
                 <Button
                     android:id="@+id/buttonMedios"
@@ -55,7 +55,7 @@
                     android:layout_weight="1"
                     android:elevation="5dp"
                     android:text="@string/medios"
-                    android:textColor="@color/velTextWhite"
+                    android:textColor="@color/verdeVelButtonsDesactivados"
                     style="@style/Widget.AppCompat.Button.Colored"/>
 
                 <Button
@@ -65,7 +65,7 @@
                     android:layout_weight="1"
                     android:elevation="5dp"
                     android:text="@string/rapidos"
-                    android:textColor="@color/velTextWhite"
+                    android:textColor="@color/verdeVelButtonsDesactivados"
                     style="@style/Widget.AppCompat.Button.Colored"/>
 
                 <Spinner

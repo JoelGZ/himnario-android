@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,9 +152,6 @@ public class SwipeAdapter extends PagerAdapter {
         ImageView partitura_image = (ImageView) layout.findViewById(R.id.partitura_image);
 //        ImageButton audioControls = (ImageButton) layout.findViewById(R.id.showControlsBtn);
 
-        Log.v(LOG_TAG, "POSITION: " + position);
-        Glide.with(context).load(partitura_files.get(position)).into(partitura_image);
-
 /*        audioControls.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,7 +181,7 @@ public class SwipeAdapter extends PagerAdapter {
         });*/
 
         mAttacher = new PhotoViewAttacher(partitura_image);
-
+        Glide.with(context).load(partitura_files.get(position)).into(partitura_image);
         orientation = context.getResources().getConfiguration().orientation;
         if (orientation == 2){              // if phone is in landscape
             mAttacher.setMaximumScale((float)3.5);

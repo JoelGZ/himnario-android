@@ -76,6 +76,7 @@ public class MusicaActivity extends ActionBarActivity implements MediaController
         //Partitura setup
         String partituraStr = coro.sName.replace(" ", "_") + ".jpg";
         File file = new File(getFilesDir() + "/" + partituraStr);
+        mAttacher = new PhotoViewAttacher(imageView);
         if (file.exists()) {
             Glide.with(getApplicationContext()).load(file).into(imageView);
         } else {
@@ -94,7 +95,7 @@ public class MusicaActivity extends ActionBarActivity implements MediaController
             });
         }
 
-        mAttacher = new PhotoViewAttacher(imageView);
+
 
         orientation = getResources().getConfiguration().orientation;
         if (orientation == 2){              // if phone is in landscape
