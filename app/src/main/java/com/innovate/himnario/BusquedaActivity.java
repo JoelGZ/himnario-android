@@ -4,16 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -65,8 +62,6 @@ public class BusquedaActivity extends ActionBarActivity {
     private boolean rapBtnAux = false;
     private boolean medBtnAux = false;
     private boolean lentBtnAux = false;
-    private int progressStatus = 0;
-    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,13 +114,6 @@ public class BusquedaActivity extends ActionBarActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, ArrayList<Coro> lista) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(lista));
-        recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Log.v(LOG_TAG, "FINISH");
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
     }
 
     public class SimpleItemRecyclerViewAdapter
@@ -135,6 +123,12 @@ public class BusquedaActivity extends ActionBarActivity {
 
         public SimpleItemRecyclerViewAdapter(ArrayList<Coro> mListaCoros) {
             listaCoros = mListaCoros;
+        }
+
+        @Override
+        public void onViewAttachedToWindow(ViewHolder holder) {
+            super.onViewAttachedToWindow(holder);
+            progressBar.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -190,7 +184,6 @@ public class BusquedaActivity extends ActionBarActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putLong(STATE_LISTA, listaRowId);
-        Log.v(LOG_TAG, "LOGDDD: " + listaRowId);
         super.onSaveInstanceState(outState);
     }
 
@@ -359,10 +352,10 @@ public class BusquedaActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 if (!lentBtnAux) {
-                    btnLentos.setTextColor(0xFF7BAD3E);
+                    btnLentos.setTextColor(Color.WHITE);
                     velocidadesActivas.add("L");
                 } else {
-                    btnLentos.setTextColor(Color.WHITE);
+                    btnLentos.setTextColor(0xFF7BAD3E);
                     velocidadesActivas.remove("L");
                 }
                 lentBtnAux = !lentBtnAux;
@@ -375,10 +368,10 @@ public class BusquedaActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 if (!medBtnAux) {
-                    btnMedios.setTextColor(0xFF7BAD3E);
+                    btnMedios.setTextColor(Color.WHITE);
                     velocidadesActivas.add("M");
                 } else {
-                    btnMedios.setTextColor(Color.WHITE);
+                    btnMedios.setTextColor(0xFF7BAD3E);
                     velocidadesActivas.remove("M");
                 }
                 medBtnAux = !medBtnAux;
@@ -391,10 +384,10 @@ public class BusquedaActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 if (!rapBtnAux) {
-                    btnRapidos.setTextColor(0xFF7BAD3E);
+                    btnRapidos.setTextColor(Color.WHITE);
                     velocidadesActivas.add("R");
                 } else {
-                    btnRapidos.setTextColor(Color.WHITE);
+                    btnRapidos.setTextColor(0xFF7BAD3E);
                     velocidadesActivas.remove("R");
                 }
                 rapBtnAux = !rapBtnAux;

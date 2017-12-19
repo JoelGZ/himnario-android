@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class BusquedaParaListaActivity extends ActionBarActivity {
     Button btnMedios;
     SearchView searchView;
     LinearLayout searchLayout;
+    ProgressBar progressBar;
 
     //Firebase setup
     FirebaseDatabase database = Utils.getDatabase();
@@ -106,6 +108,7 @@ public class BusquedaParaListaActivity extends ActionBarActivity {
         }
 
         searchLayout = (LinearLayout) findViewById(R.id.searchLayout);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         //Searchview setup
         searchView = (SearchView) findViewById(R.id.searchView);
@@ -152,6 +155,12 @@ public class BusquedaParaListaActivity extends ActionBarActivity {
 
         public SimpleItemRecyclerViewAdapter(ArrayList<Coro> mListaCoros) {
             listaCoros = mListaCoros;
+        }
+
+        @Override
+        public void onViewAttachedToWindow(ViewHolder holder) {
+            super.onViewAttachedToWindow(holder);
+            progressBar.setVisibility(View.INVISIBLE);
         }
 
         @Override
