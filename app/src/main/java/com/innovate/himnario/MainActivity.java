@@ -27,6 +27,8 @@ public class MainActivity extends ActionBarActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private FirebaseAuth mAuth;
+    private BackgroundDownloads downloadPartiturasThread;
+    private static int screenCounter;
 
     @Override
     public void onStart() {
@@ -56,8 +58,16 @@ public class MainActivity extends ActionBarActivity {
         mAuth = FirebaseAuth.getInstance();
 
         File partitura = new File(getFilesDir() + "/y_mire_y_oi.jpg");
-        if (!partitura.exists()) {
-            descargarPartituras();
+        downloadPartiturasThread = new BackgroundDownloads(getApplicationContext());
+
+        Log.v(LOG_TAG, "SCREEN COUNTER: " + screenCounter);
+        if (screenCounter == 0) {
+            screenCounter += 1;
+            if (!partitura.exists()) {
+                descargarPartituras();
+            } else {
+                downloadPartiturasThread.execute("partituras");
+            }
         }
     }
 
@@ -69,8 +79,7 @@ public class MainActivity extends ActionBarActivity {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            BackgroundDownloads downloadPartituras = new BackgroundDownloads(getApplicationContext());
-                            downloadPartituras.execute("partituras");
+                            downloadPartiturasThread.execute("partituras");
                         }
                     });
             AlertDialog dialog = alertBuilder.create();

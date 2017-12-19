@@ -1,6 +1,7 @@
 package com.innovate.himnario;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -22,11 +23,15 @@ import com.innovate.himnario.data.Coro;
 import java.io.File;
 import java.util.Stack;
 
+
 /**
  * Created by Joel on 05-Dec-17.
  */
 
 public class BackgroundDownloads extends AsyncTask {
+    private static final String LOG_TAG = BackgroundDownloads.class.getSimpleName();
+    public static final String PREFS_NAME = "MyPrefsFile";
+    public static final String CONT_PART_DES = "ContadorPartiturasDescargadas";
 
     // Firebase variables
     private FirebaseDatabase database = Utils.getDatabase();
@@ -37,9 +42,11 @@ public class BackgroundDownloads extends AsyncTask {
     private DatabaseReference corosRef;
     private FirebaseStorage storage;
 
-    private int contPartituras = 0;
-    private int contAudios = 0;
     private Context context;
+    private int contadorPartiturasStackInicial = 0;
+    private int contadorGlobal = 0;
+    private SharedPreferences.Editor editor;
+    private SharedPreferences settings;
 
     public BackgroundDownloads(Context c) {
         this.context = c;
@@ -53,8 +60,10 @@ public class BackgroundDownloads extends AsyncTask {
         corosRef = database.getReference().child("coros");
         Query corosQuery = corosRef.orderByChild("orden");
 
+        settings = context.getSharedPreferences(PREFS_NAME, 0);
+
         if (params[0].equals("partituras")){
-            getPartiturasFromDB(corosQuery);
+            getPartiturasFromDB(corosQuery, params);
         } else if (params[0].equals("audios")) {
             getAudiosFromDB(corosQuery);
         }
@@ -62,7 +71,7 @@ public class BackgroundDownloads extends AsyncTask {
         return null;
     }
 
-    public void getPartiturasFromDB(Query query) {
+    public void getPartiturasFromDB(Query query, final Object[] params) {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -79,7 +88,12 @@ public class BackgroundDownloads extends AsyncTask {
                         nombresStack.add(partituraStr);
                     }
                 }
-                downloadPartitura(partiturasStack, nombresStack);
+
+
+                if (!nombresStack.isEmpty()) {
+                    contadorPartiturasStackInicial = partiturasStack.size();
+                    downloadPartiturasFromStack(partiturasStack, nombresStack);
+                }
             }
 
             @Override
@@ -89,25 +103,44 @@ public class BackgroundDownloads extends AsyncTask {
         });
     }
 
-    public void downloadPartitura(final Stack<StorageReference> partiturasStack, final Stack<String> nombresStack) {
+    public void downloadPartiturasFromStack(final Stack<StorageReference> partiturasStack, final Stack<String> nombresStack) {
         final String partituraStr = nombresStack.pop();
         final File localFile = new File(context.getFilesDir() + "/" + partituraStr);
-        StorageReference storageReference = partiturasStack.pop();
-        storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                Log.v("DOWNLOADS", partituraStr);
-                if (!partiturasStack.isEmpty()) {
-                    downloadPartitura(partiturasStack, nombresStack);
-                } else {
-                    Toast.makeText(context, "Descarga completada.", Toast.LENGTH_LONG).show();
+
+        /*
+        Esta condicion revisa si todas las paritutras estan descargadas.
+        Si getContador es 0 es porque no se ha descargado ninguna.
+        Si getContador es menor a partituraStack.size es porque no se descargaron todas las partituras
+         */
+        final int contador = settings.getInt(CONT_PART_DES, 0);
+        if (contador != contadorPartiturasStackInicial) {
+            if (!localFile.exists()) {
+                StorageReference storageReference = partiturasStack.pop();
+                storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        if (!partiturasStack.isEmpty()) {
+                            addToContador();
+                            editor = settings.edit();
+                            editor.putInt(CONT_PART_DES, getContador());
+                            editor.apply();
+                            downloadPartiturasFromStack(partiturasStack, nombresStack);
+                        } else {
+                            Toast.makeText(context, "Descarga completada.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            } else {
+                //go to next
+                if (!partiturasStack.isEmpty() && !nombresStack.isEmpty()) {
+                    partiturasStack.pop();
+                    downloadPartiturasFromStack(partiturasStack, nombresStack);
                 }
             }
-        });
+        }
     }
 
     public void getAudiosFromDB(Query query) {
-
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -159,5 +192,22 @@ public class BackgroundDownloads extends AsyncTask {
                 }
             }
         });
+    }
+
+    public void addToContador() {
+        int contadorSettings = settings.getInt(CONT_PART_DES, 0);
+        if (contadorSettings == 0) {
+            contadorGlobal += 1;
+        } else {
+            if (contadorGlobal == 0) {
+                contadorGlobal = contadorSettings + 1;
+            } else {
+                contadorGlobal += 1;
+            }
+        }
+    }
+
+    public int getContador() {
+        return contadorGlobal;
     }
 }

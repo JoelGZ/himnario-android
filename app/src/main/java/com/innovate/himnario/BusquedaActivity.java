@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
@@ -12,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,6 +50,7 @@ public class BusquedaActivity extends ActionBarActivity {
     Button btnMedios;
     SearchView searchView;
     LinearLayout searchLayout;
+    ProgressBar progressBar;
 
     //Firebase setup
     FirebaseDatabase database = Utils.getDatabase();
@@ -58,10 +62,11 @@ public class BusquedaActivity extends ActionBarActivity {
     ArrayList<Coro> listaAux = new ArrayList<>();
     ArrayList<String> velocidadesActivas = new ArrayList<>();
 
-    boolean rapBtnAux = false;
-    boolean medBtnAux = false;
-    boolean lentBtnAux = false;
-
+    private boolean rapBtnAux = false;
+    private boolean medBtnAux = false;
+    private boolean lentBtnAux = false;
+    private int progressStatus = 0;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,7 @@ public class BusquedaActivity extends ActionBarActivity {
         }
 
         searchLayout = (LinearLayout) findViewById(R.id.searchLayout);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         //Searchview setup
         searchView = (SearchView) findViewById(R.id.searchView);
@@ -113,6 +119,13 @@ public class BusquedaActivity extends ActionBarActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, ArrayList<Coro> lista) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(lista));
+        recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Log.v(LOG_TAG, "FINISH");
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     public class SimpleItemRecyclerViewAdapter
