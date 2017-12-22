@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -28,6 +29,12 @@ public class MisListasActivity extends ActionBarActivity {
     private static final String LOG_TAG = MisListasActivity.class.getSimpleName();
     private static final String EXTRA_LISTA_ID = "listaid";
     private static final String LISTAS_PREFERENCE = "lista_de_listas";
+    private static final String PREF_SETTINGS = "MyPrefsFile";
+    private static final String FIRST_TIME_ON_SCREEN = "FirstTimeOnScreen";
+
+    private SharedPreferences.Editor editor;
+    private SharedPreferences settings;
+
     DataBaseHelper dbHelper = new DataBaseHelper(this);
     DataBaseHelper myDbHelper;
     SQLiteDatabase db;
@@ -60,11 +67,37 @@ public class MisListasActivity extends ActionBarActivity {
         //Connecting to database
         db = dbHelper.getWritableDatabase();
 
-        try {
-            setContentView(R.layout.activity_mis_listas);
-            loadListas();
-        } catch (Exception e) {}
+        //THIS CODE WILL NOTE BE NECESARRY ON FUTURE UPDATES... ONLY ON UPDATE 2.0.0
+        settings = this.getSharedPreferences(PREF_SETTINGS, 0);
+        boolean firstTimeFlag = settings.getBoolean(FIRST_TIME_ON_SCREEN, true);
+        final MisListasContract listas = new MisListasContract(getApplicationContext());
+        int listasArraySize = listas.getListasArray().size();
 
+        if (firstTimeFlag && listasArraySize > 0) {     //si es la primera vez q entra despues del update y tiene listas creadas...
+            //I need to eliminate all lists because of the new way lists are created.
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    myDbHelper.deleteAllRowsListas();
+                    listas.removeAllElements();
+                    editor = settings.edit();
+                    editor.putBoolean(FIRST_TIME_ON_SCREEN, false);
+                    editor.apply();
+                }
+            });
+            builder.setMessage("Debido a una nueva manera de crear listas, es necesario eliminar las listas pasadas.");
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            //ONLY KEEP THIS CODE AFTER UPDATE 2.0.0
+            try {
+                setContentView(R.layout.activity_mis_listas);
+                loadListas();
+            } catch (Exception e) {}
+        }
     }
 
     public void loadListas() {

@@ -58,6 +58,10 @@ public class MisListasContract  {
         return listasArray.get(index);
     }
 
+    public ArrayList<Long> getListasArray() {
+        return listasArray;
+    }
+
     //Always call when deleting list
     public void removeElementFromArrayList(long deletedRowID) {
         listasArray.remove(deletedRowID);

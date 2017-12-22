@@ -34,7 +34,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //The Android's default system path of your application database.
     private static final String DB_PATH = "/data/data/com.innovate.himnario/databases/";
     private static final String DB_NAME = "corosDB.db";
-	private static final int DATABASE_VERSION = 10;
+	private static final int DATABASE_VERSION = 11;
 
 	// NO OLVIDARSE de copiar db del folder de debug a release IMPORTANTISIMO
 
@@ -45,6 +45,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	 * 26/03/2016 v8 copiar base de datos de debug a release para V23
 	 * 30/05/2016 v9 Su Nombre es Exaltado
 	 * 16/09/2016 v10 El Amor de Dios y Tu Dios Reina
+	 * 20/12/2017 v11 Actualizacion a v2.0.0
 	 */
 
 	public static final String TABLE_MAIN = Coros.CorosEntry.TABLE_NAME;
