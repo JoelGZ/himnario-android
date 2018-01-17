@@ -87,7 +87,7 @@ public class MisListasActivity extends ActionBarActivity {
                     editor.apply();
                 }
             });
-            builder.setMessage("Debido a una nueva manera de crear listas, es necesario eliminar las listas pasadas.");
+            builder.setMessage("Debido a la nueva actualización, es necesario eliminar las listas pasadas.");
 
             AlertDialog dialog = builder.create();
             dialog.show();
