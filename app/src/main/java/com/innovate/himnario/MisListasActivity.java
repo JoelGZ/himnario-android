@@ -46,9 +46,35 @@ public class MisListasActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        cursor = myDbHelper.getAllRowsListas(null);
-        if (contadorListas != cursor.getCount()) {
-            loadListas();
+        //THIS CODE WILL NOTE BE NECESSARY ON FUTURE UPDATES... ONLY ON UPDATE 2.0.0
+        settings = this.getSharedPreferences(PREF_SETTINGS, 0);
+        boolean firstTimeFlag = settings.getBoolean(FIRST_TIME_ON_SCREEN, true);
+        final MisListasContract listas = new MisListasContract(getApplicationContext());
+        int listasArraySize = listas.getListasArray().size();
+        if (firstTimeFlag && listasArraySize > 0) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    myDbHelper.deleteAllRowsListas();
+                    listas.removeAllElements();
+                    editor = settings.edit();
+                    editor.putBoolean(FIRST_TIME_ON_SCREEN, false);
+                    editor.apply();
+                }
+            });
+            builder.setMessage("Debido a la nueva actualización, es necesario eliminar las listas pasadas.");
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            //only this will be necessary
+            cursor = myDbHelper.getAllRowsListas(null);
+            if (contadorListas != cursor.getCount()) {
+                loadListas();
+            }
         }
     }
 
@@ -56,6 +82,7 @@ public class MisListasActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        settings = this.getSharedPreferences(PREF_SETTINGS, 0);
         //Connecting to database
         myDbHelper = new DataBaseHelper(getApplicationContext());
         try {
@@ -67,8 +94,7 @@ public class MisListasActivity extends ActionBarActivity {
         //Connecting to database
         db = dbHelper.getWritableDatabase();
 
-        //THIS CODE WILL NOTE BE NECESARRY ON FUTURE UPDATES... ONLY ON UPDATE 2.0.0
-        settings = this.getSharedPreferences(PREF_SETTINGS, 0);
+        //THIS CODE WILL NOTE BE NECESSARY ON FUTURE UPDATES... ONLY ON UPDATE 2.0.0
         boolean firstTimeFlag = settings.getBoolean(FIRST_TIME_ON_SCREEN, true);
         final MisListasContract listas = new MisListasContract(getApplicationContext());
         int listasArraySize = listas.getListasArray().size();
