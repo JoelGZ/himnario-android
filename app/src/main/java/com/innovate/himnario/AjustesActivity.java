@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -62,6 +63,8 @@ public class AjustesActivity extends AppCompatActivity {
             genArray.add("Eliminar audios");
         }
 
+        genArray.add("Actualizaciones");
+
         ArrayAdapter<String> genArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, genArray);
         generalList.setAdapter(genArrayAdapter);
 
@@ -78,6 +81,11 @@ public class AjustesActivity extends AppCompatActivity {
                             eliminarAudios();
                         }
                         break;
+                    case 1:
+                        //actualizaciones
+                        Intent intentUpdates = new Intent(AjustesActivity.this, UpdatesActivity.class);
+                        startActivity(intentUpdates);
+                        break;
                     default:
                         break;
                 }
@@ -86,7 +94,7 @@ public class AjustesActivity extends AppCompatActivity {
 
         ArrayList<String> contactArray = new ArrayList<>();
         contactArray.add("Reporta un problema");
-        contactArray.add("Actualizaciones");
+        contactArray.add("Politica de privacidad");
 
         ArrayAdapter<String> contactArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contactArray);
         contactList.setAdapter(contactArrayAdapter);
@@ -101,10 +109,9 @@ public class AjustesActivity extends AppCompatActivity {
                         startActivity(intentReporte);
                         break;
                     case 1:
-                        //actualizaciones
-                        Intent intentUpdates = new Intent(AjustesActivity.this, UpdatesActivity.class);
-                        startActivity(intentUpdates);
-                        break;
+                        //Privacy policy
+                        Intent intentPrivacyPolicy = new Intent(Intent.ACTION_VIEW, Uri.parse("https://innovateideasjg.wordpress.com/privacy-policy/"));
+                        startActivity(intentPrivacyPolicy);
                     default:
                         break;
                 }
@@ -114,7 +121,7 @@ public class AjustesActivity extends AppCompatActivity {
 
     public void eliminarAudios() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setMessage("Se eiminarán los audios descargadss. Solamente estarán disponibles si hay conexión al internet.").setNegativeButton("Cancelar", null)
+        alertBuilder.setMessage("Se eliminarán los audios descargados. Solamente estarán disponibles si hay conexión al internet.").setNegativeButton("Cancelar", null)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

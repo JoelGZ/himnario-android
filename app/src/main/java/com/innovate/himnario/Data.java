@@ -12,6 +12,8 @@ public class Data {
 
     private static ArrayList<Coro> listaCoros;
     private static Coro coro;
+    static int cantidadCorosEnListaCorosLocalOLD = 0;
+    static int cantidadCorosEnListaCorosLocal = 0;
 
     public Data() {
 
@@ -19,6 +21,8 @@ public class Data {
 
     public void setListaCoros(ArrayList<Coro> listaCoros) {
         this.listaCoros = listaCoros;
+        setCantidadCorosEnListaCorosLocalOLD();
+        cantidadCorosEnListaCorosLocal = listaCoros.size();
     }
 
     public ArrayList<Coro> getListaCoros() {
@@ -27,7 +31,19 @@ public class Data {
 
     public void setCoroBeingUsed(Coro coro) {this.coro = coro;}
 
-    public Coro getCoroBeingUsed() {
-        return coro;
+    public void clearListaCoros(){
+        listaCoros = null;
+    }
+
+    public int getCantidadCorosEnListaCorosLocal() {
+        return cantidadCorosEnListaCorosLocal;
+    }
+
+    public int getCantidadCorosEnListaCorosLocalOLD(){
+        return cantidadCorosEnListaCorosLocalOLD;
+    }
+
+    public void setCantidadCorosEnListaCorosLocalOLD(){
+        cantidadCorosEnListaCorosLocalOLD = cantidadCorosEnListaCorosLocal;
     }
 }

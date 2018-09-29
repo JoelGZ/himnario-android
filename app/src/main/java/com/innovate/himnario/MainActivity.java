@@ -18,6 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,9 +31,15 @@ import java.io.IOException;
 public class MainActivity extends ActionBarActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private FirebaseAuth mAuth;
+
     private BackgroundDownloads downloadPartiturasThread;
-    private static int screenCounter;
+
+    //Firebase setup
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database = Utils.getDatabase();
+    private DatabaseReference corosRef;
+
+    private Data data;
 
     @Override
     public void onStart() {
@@ -56,18 +67,67 @@ public class MainActivity extends ActionBarActivity {
         setTitle(R.string.title_activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        data = new Data();
 
+        //Connect to Firebase DB
+        corosRef = database.getReference().child("coros");
+        corosRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                if (data.getListaCoros() != null) {
+                    data.clearListaCoros();
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        /*.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // if something has changed in coros Firebase DB clear local list so it can be repopulated
+                if (data.getListaCoros() != null) {
+                    data.clearListaCoros();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
+
+
+        //Descarga de partituras primera vez
         File partitura = new File(getFilesDir() + "/y_mire_y_oi.jpg");
-        downloadPartiturasThread = new BackgroundDownloads(getApplicationContext());
+        if (!partitura.exists()) {
+            descargarPartituras();          //Unicamente se ejecuta la primera vez
+        }
 
-        Log.v(LOG_TAG, "SCREEN COUNTER: " + screenCounter);
-        if (screenCounter == 0) {
-            screenCounter += 1;
-            if (!partitura.exists()) {
-                descargarPartituras();
-            } else {
+        //Descarga de partituras si se ha agregado un coro nuevo
+        downloadPartiturasThread = new BackgroundDownloads(getApplicationContext());
+        if (data.getCantidadCorosEnListaCorosLocalOLD() != data.getCantidadCorosEnListaCorosLocal()){
+            if (data.getCantidadCorosEnListaCorosLocalOLD() != 0){
                 downloadPartiturasThread.execute("partituras");
             }
+            data.setCantidadCorosEnListaCorosLocalOLD();        // hace q ambos numeros sean iguales para que este if no se repita
         }
     }
 
